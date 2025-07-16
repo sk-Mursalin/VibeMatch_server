@@ -1,13 +1,23 @@
 const express = require("express");
+const bcrypt = require("bcrypt")
 const { databaseConnection } = require("./config/dataBase");
 const User = require("./model/user");
-
+const { signupValidation } = require("./utils/validation");
+const validator = require("validator");
 const app = express();
 app.use(express.json());
 
 app.post("/signup", async (req, res) => {
-    const user = new User(req.body);
     try {
+        signupValidation(req)
+        const { email, password, lastName, firstName } = req.body
+        const encryptedPass = await bcrypt.hash(password, 10)
+        const user = new User({
+            firstName,
+            lastName,
+            email,
+            password: encryptedPass
+        });
         await user.save()
         res.send("user successfully created")
     }
@@ -15,7 +25,27 @@ app.post("/signup", async (req, res) => {
         res.status(400).send(err.message)
     }
 });
-
+app.post("/login", async (req, res) => {
+    const { email, password } = req.body
+    try {
+        if (!validator.isEmail(email)) {
+            throw new Error("please enter a valid email")
+        }
+        const user = await User.findOne({ email: email })
+        if (!user) {
+            res.send("please sign up")
+        }
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            res.send("invalid credential")
+        }else{
+            res.send("welcome in devtinder")
+        }
+    }
+    catch (err) {
+        res.status(400).send(err.message);
+    }
+})
 app.get("/user", async (req, res) => {
     const userEmailId = req.body.email;
     const user = await User.findOne({ email: userEmailId })
