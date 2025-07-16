@@ -27,6 +27,7 @@ app.post("/signup", async (req, res) => {
 });
 app.post("/login", async (req, res) => {
     const { email, password } = req.body
+
     try {
         if (!validator.isEmail(email)) {
             throw new Error("please enter a valid email")
@@ -38,7 +39,7 @@ app.post("/login", async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             res.send("invalid credential")
-        }else{
+        } else {
             res.send("welcome in devtinder")
         }
     }

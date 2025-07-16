@@ -1,4 +1,6 @@
 const validator = require("validator");
+
+
 const signupValidation = (req) => {
     const { firstName, lastName, email, password } = req.body;
 
@@ -10,6 +12,9 @@ const signupValidation = (req) => {
     }
 }
 
+
+
 module.exports = {
-    signupValidation
+    signupValidation,
+   
 }
