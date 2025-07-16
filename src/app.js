@@ -12,7 +12,7 @@ app.post("/signup", async (req, res) => {
         res.send("user successfully created")
     }
     catch (err) {
-        res.status(400).send("error occured")
+        res.status(400).send(err.message)
     }
 });
 
@@ -52,14 +52,21 @@ app.delete("/user", async (req, res) => {
 
 app.patch("/user", async (req, res) => {
     const userId = req.body.userId
-    const data = req.body
+    const data = req.body;
+    const allowedFilled = ["age", "skill", "password", "userId"]
+    const isAllowed = Object.keys(req.body).every((el) => allowedFilled.includes(el));
     try {
-        const dataBefore = await User.findByIdAndUpdate(userId, data, {returnDocument :'before'});
-        console.log(dataBefore);
+        if (!isAllowed) {
+            throw new Error("update not allwed")
+        }
+        if (data?.skill && data?.skill.length > 5) {
+            throw new Error("skill not allowed more than 5");
+        }
+        const dataBefore = await User.findByIdAndUpdate(userId, data, { returnDocument: 'before', runValidators: true });
         res.send("updated successfully")
-    }catch(err){
-        res.status(500).send("internal error")
-    }  
+    } catch (err) {
+        res.status(500).send(err.message)
+    }
 })
 databaseConnection().then(() => {
     console.log("database connection is establish");
