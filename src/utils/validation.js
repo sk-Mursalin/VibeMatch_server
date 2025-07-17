@@ -16,5 +16,4 @@ const signupValidation = (req) => {
 
 module.exports = {
     signupValidation,
-   
 }

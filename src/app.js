@@ -4,8 +4,11 @@ const { databaseConnection } = require("./config/dataBase");
 const User = require("./model/user");
 const { signupValidation } = require("./utils/validation");
 const validator = require("validator");
+const cookieParser = require("cookie-parser");
+const jwt = require('jsonwebtoken');
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 app.post("/signup", async (req, res) => {
     try {
@@ -19,7 +22,8 @@ app.post("/signup", async (req, res) => {
             password: encryptedPass
         });
         await user.save()
-        res.send("user successfully created")
+        res.send("user successfully created");
+        clg(req.body)
     }
     catch (err) {
         res.status(400).send(err.message)
@@ -40,13 +44,35 @@ app.post("/login", async (req, res) => {
         if (!isPasswordValid) {
             res.send("invalid credential")
         } else {
-            res.send("welcome in devtinder")
+            const token = jwt.sign({ _id: user._id }, "virat@123");
+            res.cookie("token", token);
+            res.send("welcome in devtinder");
         }
     }
     catch (err) {
         res.status(400).send(err.message);
     }
-})
+});
+
+app.get("/profile", async (req, res) => {
+    try {
+        const cookie = req.cookies
+        const { token } = cookie
+        console.log(token);
+        if (!token) {
+            throw new Error("invalid token")
+        }
+        const { _id } = jwt.verify(token, 'virat@123');
+        const profile = await User.findOne({ _id: _id });
+        if (!profile) {
+            throw new Error("user not found")
+        }
+        res.send(profile)
+    } catch (err) {
+        res.send(err.message)
+    }
+});
+
 app.get("/user", async (req, res) => {
     const userEmailId = req.body.email;
     const user = await User.findOne({ email: userEmailId })
@@ -70,6 +96,7 @@ app.get("/users", async (req, res) => {
         res.status(500).send("data base error")
     }
 });
+
 app.delete("/user", async (req, res) => {
     const userId = req.body.userId;
     console.log(userId);
@@ -98,7 +125,8 @@ app.patch("/user", async (req, res) => {
     } catch (err) {
         res.status(500).send(err.message)
     }
-})
+});
+
 databaseConnection().then(() => {
     console.log("database connection is establish");
     app.listen(3000, () => {
