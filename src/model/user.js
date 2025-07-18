@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -7,7 +6,6 @@ const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
-        trim: true
     },
     lastName: {
         type: String,
@@ -19,11 +17,6 @@ const userSchema = new mongoose.Schema({
         unique: true,
         trim: true,
         lowercase: true,
-        // validate(value) {
-        //     if (!validator.isEmail(value)) {
-        //         throw new Error("please enter valid email")
-        //     }
-        // }
     },
     password: {
         type: String,
@@ -43,7 +36,11 @@ const userSchema = new mongoose.Schema({
     },
     skill: {
         type: [String]
+    },
+    photoUrl: {
+        type: String
     }
+
 }, { timestamps: true });
 
 userSchema.methods.getJwt = function () {

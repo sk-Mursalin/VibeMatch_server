@@ -11,6 +11,14 @@ const signupValidation = (req) => {
         throw new Error("invalid")
     }
 }
+
+const profileEditValidation = (req) => {
+    const allowEditField = ["firstName", "lastName", "age", "photoUrl", "skill", "gender"];
+
+    const isEditAllowed = Object.keys(req.body).every((el) => allowEditField.includes(el));
+    return isEditAllowed
+}
 module.exports = {
     signupValidation,
+    profileEditValidation
 }
