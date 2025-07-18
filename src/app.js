@@ -5,6 +5,7 @@ const User = require("./model/user");
 const { signupValidation } = require("./utils/validation");
 const validator = require("validator");
 const cookieParser = require("cookie-parser");
+const {userAuth} = require("./middlewares/auth")
 const jwt = require('jsonwebtoken');
 const app = express();
 app.use(express.json());
@@ -23,7 +24,6 @@ app.post("/signup", async (req, res) => {
         });
         await user.save()
         res.send("user successfully created");
-        clg(req.body)
     }
     catch (err) {
         res.status(400).send(err.message)
@@ -40,11 +40,11 @@ app.post("/login", async (req, res) => {
         if (!user) {
             res.send("please sign up")
         }
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const isPasswordValid = await user.compareHashPassword(password)
         if (!isPasswordValid) {
             res.send("invalid credential")
         } else {
-            const token = jwt.sign({ _id: user._id }, "virat@123");
+            const token =  user.getJwt();
             res.cookie("token", token);
             res.send("welcome in devtinder");
         }
@@ -54,25 +54,18 @@ app.post("/login", async (req, res) => {
     }
 });
 
-app.get("/profile", async (req, res) => {
+app.get("/profile",userAuth, async (req, res) => {
     try {
-        const cookie = req.cookies
-        const { token } = cookie
-        console.log(token);
-        if (!token) {
-            throw new Error("invalid token")
-        }
-        const { _id } = jwt.verify(token, 'virat@123');
-        const profile = await User.findOne({ _id: _id });
-        if (!profile) {
-            throw new Error("user not found")
-        }
+        const profile = req.profile
         res.send(profile)
     } catch (err) {
         res.send(err.message)
     }
 });
-
+app.post("/connectionrequest",userAuth,(req,res)=>{
+    const user = req.profile;
+    res.send("connection send from " + user.firstName);
+})
 app.get("/user", async (req, res) => {
     const userEmailId = req.body.email;
     const user = await User.findOne({ email: userEmailId })
@@ -99,7 +92,6 @@ app.get("/users", async (req, res) => {
 
 app.delete("/user", async (req, res) => {
     const userId = req.body.userId;
-    console.log(userId);
     try {
         await User.findByIdAndDelete({ _id: userId });
         res.send("user is deleted successfully")

@@ -11,9 +11,6 @@ const signupValidation = (req) => {
         throw new Error("invalid")
     }
 }
-
-
-
 module.exports = {
     signupValidation,
 }
