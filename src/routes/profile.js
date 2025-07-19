@@ -47,5 +47,6 @@ profileRouter.patch("/profile/passwordedit", userAuth, async (req, res) => {
     } catch (err) {
         res.send(err.message)
     }
-})
+});
+
 module.exports = profileRouter;
