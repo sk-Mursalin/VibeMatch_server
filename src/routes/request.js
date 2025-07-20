@@ -54,6 +54,7 @@ requestRouter.post("/connection/review/:status/:userid", userAuth, async (req, r
         if (!allowedStatus.includes(status)) {
             throw new Error("status is not valid ")
         }
+
         const connectionRequest = await ConnectionRequestModel.findOne({
             _id:userid , toUserId: loggedinUser._id, status: "interested"
         });
