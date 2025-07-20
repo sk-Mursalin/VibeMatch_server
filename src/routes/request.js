@@ -14,9 +14,9 @@ requestRouter.post("/connection/:status/:userid", userAuth, async (req, res) => 
         if (!allowedStatus.includes(status)) {
             throw new Error("status is not valid ")
         }
-        if (fromUserId == toUserId) {
-            return res.json({ message: "you can not send connection to own" })
-        }
+        // if (fromUserId.equals(toUserId)) {
+        //     return res.json({ message: "you can not send connection to own" })
+        // }
         const toUserIdExist = await UserModel.findById(toUserId);
         if (!toUserIdExist) {
             throw new Error("user not exist");
@@ -45,4 +45,30 @@ requestRouter.post("/connection/:status/:userid", userAuth, async (req, res) => 
     }
 });
 
+requestRouter.post("/connection/review/:status/:userid", userAuth, async (req, res) => {
+    try {
+        const loggedinUser = req.profile;
+        const { status, userid } = req.params;
+
+        const allowedStatus = ["accepted", "rejected"]
+        if (!allowedStatus.includes(status)) {
+            throw new Error("status is not valid ")
+        }
+        const connectionRequest = await ConnectionRequestModel.findOne({
+            _id:userid , toUserId: loggedinUser._id, status: "interested"
+        });
+        if (!connectionRequest) {
+            throw new Error("connecton request  not found ");
+        }
+        connectionRequest.status = status;
+        const data = await connectionRequest.save()
+        res.json({
+            mesaage: "connection made ",
+            data: data
+        })
+    } catch (err) {
+        res.json({ message: err.message });
+    }
+
+})
 module.exports = requestRouter;
