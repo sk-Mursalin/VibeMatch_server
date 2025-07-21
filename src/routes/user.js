@@ -30,7 +30,6 @@ userRouter.get("/user/allconnection", userAuth, async (req, res) => {
             ]
         }).populate("fromUserId", ['firstName', 'lastName', 'age', 'gender'])
             .populate("toUserId", ['firstName', 'lastName', 'age', 'gender']);
-        console.log(allConnection);
 
         const finalAllconection = allConnection.map((row) => {
             if (row.fromUserId._id.toString() === loggedUser._id.toString()) {
@@ -43,5 +42,37 @@ userRouter.get("/user/allconnection", userAuth, async (req, res) => {
         res.json({ message: err.message })
     }
 
-})
+});
+
+userRouter.get("/user/feed", userAuth, async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        let limit = parseInt(req.query.limit) || 10;
+        limit = limit > 50 ? 50 : limit
+        const skip = (page - 1) * limit;
+        const loggedUser = req.profile;
+        const alreadyConnectedUsers = await connectionRequestModel.find({
+            $or: [
+                { fromUserId: loggedUser._id.toString() },
+                { toUserId: loggedUser._id.toString() }
+            ]
+        }).select("fromUserId  toUserId")
+        const uniqueConnectedUser = new Set();
+        alreadyConnectedUsers.forEach((user) => {
+            uniqueConnectedUser.add(user.fromUserId.toString());
+            uniqueConnectedUser.add(user.toUserId.toString());
+        });
+
+        const feedUser = await User.find({
+            $and: [
+                { _id: { $nin: [...uniqueConnectedUser] } },
+                { _id: { $ne: loggedUser._id } }
+            ]
+        }).select("firstName lastName age gender skill").skip(skip).limit(limit);
+
+        res.send(feedUser)
+    } catch (err) {
+        res.json({ message: err.message })
+    }
+});
 module.exports = userRouter
