@@ -38,7 +38,7 @@ authRouter.post("/login", async (req, res) => {
         }
         const isPasswordValid = await user.compareHashPassword(password)
         if (!isPasswordValid) {
-            res.send("invalid credential")
+            res.status(400).send("invalid credential")
         } else {
             const token = user.getJwt();
             res.cookie("token", token);
@@ -51,7 +51,7 @@ authRouter.post("/login", async (req, res) => {
 });
 
 authRouter.post("/logout", (req, res) => {
-    res.cookie("token", null, { expire: new Date(0) })
+    res.cookie("token", '', { expire: new Date(0) })
     res.send("logout successfully");
 })
 
