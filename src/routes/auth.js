@@ -42,7 +42,7 @@ authRouter.post("/login", async (req, res) => {
         } else {
             const token = user.getJwt();
             res.cookie("token", token);
-            res.send("welcome in devtinder");
+            res.json({user:user});
         }
     }
     catch (err) {
