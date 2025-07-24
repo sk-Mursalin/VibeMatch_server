@@ -12,7 +12,7 @@ userRouter.get("/user/requests/recieved", userAuth, async (req, res) => {
         const requestsUsers = await connectionRequestModel.find({
             toUserId: loggedUser._id,
             status: "interested"
-        }).populate("fromUserId", ['firstName', 'lastName', 'age', 'gender']);
+        }).populate("fromUserId", ['firstName', 'lastName', 'age', 'gender', 'photoUrl']);
 
         res.json({ data: requestsUsers });
     } catch (err) {
@@ -28,8 +28,8 @@ userRouter.get("/user/allconnection", userAuth, async (req, res) => {
                 { fromUserId: loggedUser._id, status: "accepted" },
                 { toUserId: loggedUser._id, status: "accepted" }
             ]
-        }).populate("fromUserId", ['firstName', 'lastName', 'age', 'gender'])
-            .populate("toUserId", ['firstName', 'lastName', 'age', 'gender']);
+        }).populate("fromUserId", ['firstName', 'lastName', 'age', 'gender', 'photoUrl'])
+            .populate("toUserId", ['firstName', 'lastName', 'age', 'gender', 'photoUrl']);
 
         const finalAllconection = allConnection.map((row) => {
             if (row.fromUserId._id.toString() === loggedUser._id.toString()) {
