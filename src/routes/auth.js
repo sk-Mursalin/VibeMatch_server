@@ -17,8 +17,11 @@ authRouter.post("/signup", async (req, res) => {
             email,
             password: encryptedPass
         });
-        await user.save()
-        res.send("user successfully created");
+        const savedUser = await user.save()
+        const token = user.getJwt();
+        res.cookie("token", token);
+        
+        res.json({ user: savedUser });
     }
     catch (err) {
         res.status(400).send(err.message)
@@ -42,7 +45,7 @@ authRouter.post("/login", async (req, res) => {
         } else {
             const token = user.getJwt();
             res.cookie("token", token);
-            res.json({user:user});
+            res.json({ user: user });
         }
     }
     catch (err) {

@@ -68,7 +68,7 @@ userRouter.get("/user/feed", userAuth, async (req, res) => {
                 { _id: { $nin: [...uniqueConnectedUser] } },
                 { _id: { $ne: loggedUser._id } }
             ]
-        }).select("firstName lastName age gender skill").skip(skip).limit(limit);
+        }).select("firstName lastName age gender skill photoUrl").skip(skip).limit(limit);
 
         res.send(feedUser)
     } catch (err) {
