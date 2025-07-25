@@ -8,7 +8,7 @@ const userAuth = async (req, res, next) => {
             return res.status(401).send("please log in ");
         }
 
-        const { _id } = jwt.verify(token, 'virat@123');
+        const { _id } = jwt.verify(token,process.env.JWT_PASSKEY);
         const profile = await User.findById({ _id: _id });
         req.profile = profile
         next();

@@ -38,14 +38,15 @@ const userSchema = new mongoose.Schema({
         type: [String]
     },
     photoUrl: {
-        type: String
+        type: String,
+        default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISuukVSb_iHDfPAaDKboFWXZVloJW9XXiwGYFab-QwlAYQ3zFsx4fToY9ijcVNU5ieKk&usqp=CAU"
     }
 
 }, { timestamps: true });
 
 userSchema.methods.getJwt = function () {
     const user = this;
-    const token = jwt.sign({ _id: user._id }, "virat@123");
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_PASSKEY);
     return token;
 }
 
