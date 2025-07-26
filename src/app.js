@@ -7,6 +7,8 @@ const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
 const cors = require("cors");
+const http  = require("http");
+const initialSocket = require("./utils/socket");
 require('dotenv').config()
 
 app.use(cors({
@@ -20,11 +22,13 @@ app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
 
+const server = http.createServer(app);
+initialSocket(server);
 
 
 databaseConnection().then(() => {
     console.log("database connection is establish");
-    app.listen(3000, () => {
+    server.listen(3000, () => {
         console.log("server is runnnig on port 3000..");
     });
 }).catch((err) => {
