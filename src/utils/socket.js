@@ -7,7 +7,16 @@ const initialSocket = (server) => {
         }
     });
     io.on("connection", (socket) => {
-        socket.on("joinChat", () => {
+        socket.on("joinChat", ({ userId, targetUserId }) => {
+            const room = [userId, targetUserId].sort().join("_");
+            console.log(room);
+            socket.join(room);
+        })
+
+        socket.on("sendMessage", ({ messages, userId, targetUserId }) => {
+            const room = [userId, targetUserId].sort().join("_");
+            console.log(messages);
+            io.to(room).emit("recivedMessage", {messages,targetUserId} )
 
         })
     })
