@@ -37,7 +37,7 @@ authRouter.post("/login", async (req, res) => {
         }
         const user = await User.findOne({ email: email })
         if (!user) {
-            res.send("please sign up")
+            res.status(404).send("please sign up")
         }
         const isPasswordValid = await user.compareHashPassword(password)
         if (!isPasswordValid) {
