@@ -73,7 +73,7 @@ This repository contains the **backend** of VibeMatch, built with **Node.js, Exp
 ✅ Modular route organization for maintainability  
 ✅ APIs structured into separate routers (`auth`, `profile`, `connections`, `users`)  
 
-### **8. *Realtime chat *
+### **9. Realtime chat**
 ✅  Enables real-time chat communication between connected users via socket.io
 ---
 
