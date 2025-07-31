@@ -151,6 +151,11 @@ Make sure the backend is running before accessing the frontend.
 
 ---
 
+## 🚀 Deployment
+
+deployed on AWS EC2 instance.
+
+---
 
 ## 📌 Future Enhancements
 🔹 Messaging System for better user interaction  
