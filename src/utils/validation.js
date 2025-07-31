@@ -7,8 +7,8 @@ const signupValidation = (req) => {
     if (!validator.isEmail(email)) {
         throw new Error("please enter a valid email")
     }
-    else if (firstName.length >= 10 || !lastName.length >= 50) {
-        throw new Error("invalid")
+    else if (firstName.length >= 20 || lastName.length >= 30) {
+        throw new Error("please enter small name")
     }
     if (!password) {
         throw new Error("please enter password")
