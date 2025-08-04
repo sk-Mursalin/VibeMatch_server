@@ -23,7 +23,20 @@ const profileEditValidation = (req) => {
     const isEditAllowed = Object.keys(req.body).every((el) => allowEditField.includes(el));
     return isEditAllowed
 }
+const passwordValidation = (req) => {
+    const { oldPassword, newPassword } = req.body;
+    if (!oldPassword) {
+        throw new Error("please enter a oldpassword")
+    } else if (!newPassword) {
+        throw new Error("please enter new password")
+    }
+
+    if (newPassword.length < 6) {
+        throw new Error("newpassword should at least 6 character")
+    }
+}
 module.exports = {
     signupValidation,
-    profileEditValidation
+    profileEditValidation,
+    passwordValidation
 }
