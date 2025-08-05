@@ -41,6 +41,10 @@ const userSchema = new mongoose.Schema({
     photoUrl: {
         type: String,
         default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISuukVSb_iHDfPAaDKboFWXZVloJW9XXiwGYFab-QwlAYQ3zFsx4fToY9ijcVNU5ieKk&usqp=CAU"
+    },
+    about:{
+        type:String,
+        default:"Hi there! I'm using VibeMatch to connect and grow with people"
     }
 
 }, { timestamps: true });

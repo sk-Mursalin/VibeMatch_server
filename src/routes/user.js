@@ -28,8 +28,8 @@ userRouter.get("/user/allconnection", userAuth, async (req, res) => {
                 { fromUserId: loggedUser._id, status: "accepted" },
                 { toUserId: loggedUser._id, status: "accepted" }
             ]
-        }).populate("fromUserId", ['firstName', 'lastName', 'age', 'gender', 'photoUrl'])
-            .populate("toUserId", ['firstName', 'lastName', 'age', 'gender', 'photoUrl']);
+        }).populate("fromUserId", ['firstName', 'lastName', 'age', 'gender', 'photoUrl','about'])
+            .populate("toUserId", ['firstName', 'lastName', 'age', 'gender', 'photoUrl','about']);
 
         const finalAllconection = allConnection.map((row) => {
             if (row.fromUserId._id.toString() === loggedUser._id.toString()) {
@@ -68,7 +68,7 @@ userRouter.get("/user/feed", userAuth, async (req, res) => {
                 { _id: { $nin: [...uniqueConnectedUser] } },
                 { _id: { $ne: loggedUser._id } }
             ]
-        }).select("firstName lastName age gender skill photoUrl").skip(skip).limit(limit);
+        }).select("firstName lastName age gender skill photoUrl about").skip(skip).limit(limit);
 
         res.send(feedUser)
     } catch (err) {

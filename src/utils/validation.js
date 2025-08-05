@@ -18,7 +18,7 @@ const signupValidation = (req) => {
 }
 
 const profileEditValidation = (req) => {
-    const allowEditField = ["firstName", "lastName", "age", "photoUrl", "skill", "gender"];
+    const allowEditField = ["firstName", "lastName", "age", "photoUrl", "skill", "gender","about"];
 
     const isEditAllowed = Object.keys(req.body).every((el) => allowEditField.includes(el));
     return isEditAllowed
