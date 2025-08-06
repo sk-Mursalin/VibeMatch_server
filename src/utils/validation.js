@@ -18,11 +18,12 @@ const signupValidation = (req) => {
 }
 
 const profileEditValidation = (req) => {
-    const allowEditField = ["firstName", "lastName", "age", "photoUrl", "skill", "gender","about"];
+    const allowEditField = ["firstName", "lastName", "age", "photoUrl", "skill", "gender", "about"];
 
     const isEditAllowed = Object.keys(req.body).every((el) => allowEditField.includes(el));
     return isEditAllowed
 }
+
 const passwordValidation = (req) => {
     const { oldPassword, newPassword } = req.body;
     if (!oldPassword) {
@@ -35,8 +36,19 @@ const passwordValidation = (req) => {
         throw new Error("newpassword should at least 6 character")
     }
 }
+
+const postCreateValidation = (req) => {
+    const { content, photoUrl } = req.body;
+    if (!content && !photoUrl) {
+        throw new Error("please give text or photo before post  ")
+    }
+
+}
+
+
 module.exports = {
     signupValidation,
     profileEditValidation,
-    passwordValidation
+    passwordValidation,
+    postCreateValidation
 }
