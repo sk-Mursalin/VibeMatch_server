@@ -75,6 +75,12 @@ This repository contains the **backend** of VibeMatch, built with **Node.js, Exp
 
 ### **9. Realtime chat**
 ✅  Enables real-time chat communication between connected users via socket.io
+
+### **10. post text and image on feed**
+✅  user can post image and text on feed and other user can see all the post
+✅  with profile picture and timestamp
+
+
 ---
 
 ## 🚀 API Endpoints
@@ -113,13 +119,13 @@ This repository contains the **backend** of VibeMatch, built with **Node.js, Exp
 | GET    | `/user/feed?page=1&limit=10` | Get suggested developer profiles with pagination | ✅ |
 
 ---
-### **5 Feed API & Pagination**
+### **5. Feed API & Pagination**
 | Method | Endpoint      | Description                              | Auth Required |
 |--------|--------------|----------------------------------------|--------------|
 | GET    | `/chat`        | Get previous chat                                 | ✅ |
 
 ---
-### **6 Post Feed Routes**
+### **6. Post Feed Routes**
 | Method | Endpoint           | Description              | Auth Required |
 |--------|-------------------|------------------------|--------------|
 | GET    | `/post/get`   | Get all post of individual user | ✅ |
