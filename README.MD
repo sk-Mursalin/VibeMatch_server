@@ -113,13 +113,13 @@ This repository contains the **backend** of VibeMatch, built with **Node.js, Exp
 | GET    | `/user/feed?page=1&limit=10` | Get suggested developer profiles with pagination | ✅ |
 
 ---
-### **4️⃣ Feed API & Pagination**
+### **5 Feed API & Pagination**
 | Method | Endpoint      | Description                              | Auth Required |
 |--------|--------------|----------------------------------------|--------------|
 | GET    | `/chat`        | Get previous chat                                 | ✅ |
 
 ---
-### **2️⃣ Post Feed Routes**
+### **6 Post Feed Routes**
 | Method | Endpoint           | Description              | Auth Required |
 |--------|-------------------|------------------------|--------------|
 | GET    | `/post/get`   | Get all post of individual user | ✅ |
