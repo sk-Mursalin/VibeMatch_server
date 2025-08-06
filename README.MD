@@ -119,7 +119,14 @@ This repository contains the **backend** of VibeMatch, built with **Node.js, Exp
 | GET    | `/chat`        | Get previous chat                                 | ✅ |
 
 ---
+### **2️⃣ Post Feed Routes**
+| Method | Endpoint           | Description              | Auth Required |
+|--------|-------------------|------------------------|--------------|
+| GET    | `/post/get`   | Get all post of individual user | ✅ |
+| post  | `/post/create`   | create a post                 | ✅ |
 
+
+---
 ## 🏗️ Setup & Running the Server
 
 ### **1️⃣ Clone the Repository**
