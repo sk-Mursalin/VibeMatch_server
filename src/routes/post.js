@@ -7,11 +7,11 @@ const postRouter = express.Router();
 postRouter.post("/post/create", userAuth, async (req, res) => {
     try {
         postCreateValidation(req);
-        const { content, photoUrl } = req.body
+        const { content, postPhoto } = req.body
         const _id = req.profile._id
         const newPost = new PostModel({
             content,
-            photoUrl,
+            postPhoto,
             postCreatedBy: _id
         });
         await newPost.save();
@@ -24,7 +24,7 @@ postRouter.post("/post/create", userAuth, async (req, res) => {
 postRouter.get("/post/get", userAuth, async (req, res) => {
     try {
         const allPost = await PostModel.find({}).populate("postCreatedBy", "firstName  lastName  photoUrl")
-        res.status(200).json({data:allPost})
+        res.status(200).json({ data: allPost })
     } catch (err) {
         res.status(400).json({ message: err.message })
     }

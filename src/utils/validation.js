@@ -38,8 +38,8 @@ const passwordValidation = (req) => {
 }
 
 const postCreateValidation = (req) => {
-    const { content, photoUrl } = req.body;
-    if (!content && !photoUrl) {
+    const { content, postPhoto } = req.body;
+    if (!content && !postPhoto) {
         throw new Error("please give text or photo before post  ")
     }
 
