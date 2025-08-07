@@ -42,8 +42,8 @@ profileRouter.patch("/profile/passwordedit", userAuth, async (req, res) => {
         await user.save()
         res.send("password updated successfully")
     } catch (err) {
-        res.status(400).send(err.message)
+        res.status(400).json({message:err.message})
     }
-});
+}); 
 
 module.exports = profileRouter;
