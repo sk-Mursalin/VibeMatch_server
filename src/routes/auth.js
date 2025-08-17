@@ -10,6 +10,10 @@ authRouter.post("/signup", async (req, res) => {
     try {
         signupValidation(req)
         const { email, password, lastName, firstName } = req.body
+        const isEmailExist = await User.findOne({ email: email });
+        if (isEmailExist) {
+            throw new Error("email alrady exist")
+        }
         const encryptedPass = await bcrypt.hash(password, 10)
         const user = new User({
             firstName,
@@ -20,11 +24,11 @@ authRouter.post("/signup", async (req, res) => {
         const savedUser = await user.save()
         const token = user.getJwt();
         res.cookie("token", token);
-        
+
         res.json({ user: savedUser });
     }
     catch (err) {
-        res.status(400).send(err.message)
+        res.status(400).json({ message: err.message })
     }
 });
 
