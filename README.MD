@@ -119,7 +119,7 @@ This repository contains the **backend** of VibeMatch, built with **Node.js, Exp
 | GET    | `/user/feed?page=1&limit=10` | Get suggested developer profiles with pagination | ✅ |
 
 ---
-### **5. Feed API & Pagination**
+### **5. chat**
 | Method | Endpoint      | Description                              | Auth Required |
 |--------|--------------|----------------------------------------|--------------|
 | GET    | `/chat`        | Get previous chat                                 | ✅ |
@@ -131,8 +131,9 @@ This repository contains the **backend** of VibeMatch, built with **Node.js, Exp
 | GET    | `/post/get`   | Get all post of individual user | ✅ |
 | post  | `/post/create`   | create a post                 | ✅ |
 
-
 ---
+## 🔄 More exciting features coming soon… 🚀
+
 ## 🏗️ Setup & Running the Server
 
 ### **1️⃣ Clone the Repository**
@@ -144,7 +145,7 @@ cd VibeMatch_server
 ### **2️⃣ Set Up Environment Variables**
 Create a `.env` file and add:
 ```ini
-DATABASE_URL=mongodb+srv://<username>:<password>@cluster0.mongodb.net/devTinder
+DATABASE_URL=mongodb+srv://<username>:<password>@cluster0.mongodb.net/collectionName
 JWT_PASSKEY=your_jwt_secret
 ```
 
