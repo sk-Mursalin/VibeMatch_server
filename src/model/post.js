@@ -10,7 +10,7 @@ const postSchema = mongoose.Schema({
     },
     postPhoto: {
         type: String
-    }
+    },
 }, { timestamps: true })
 
 const PostModel = mongoose.model("postSchema", postSchema);
