@@ -78,7 +78,7 @@ requestRouter.get("/connections/:userId", userAuth, async (req, res) => {
     try {
         let { userId } = req.params
         userId = new mongoose.Types.ObjectId(userId);
-        
+
         const allConnections = await ConnectionRequestModel.find({
             $or: [
                 { fromUserId: userId, status: "accepted" },
@@ -87,10 +87,15 @@ requestRouter.get("/connections/:userId", userAuth, async (req, res) => {
         }).populate("fromUserId", ['firstName', 'lastName', 'age', 'gender', 'photoUrl', 'about'])
             .populate("toUserId", ['firstName', 'lastName', 'age', 'gender', 'photoUrl', 'about']);
 
-        res.status(200).json({ message: allConnections })
+        const finalAllconection = allConnections.map((el) => {
+            if (el?.fromUserId == userId) { return el?.toUserId } else { return el?.fromUserId }
+        });
+
+        res.status(200).json({ message: finalAllconection })
 
     } catch (err) {
         res.status(400).json({ message: err.message })
     }
-})
+});
+
 module.exports = requestRouter;
