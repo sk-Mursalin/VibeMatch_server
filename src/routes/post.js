@@ -2,6 +2,7 @@ const express = require("express");
 const { userAuth } = require("../middlewares/auth");
 const PostModel = require("../model/post");
 const { postCreateValidation } = require("../utils/validation");
+const mongoose = require("mongoose");
 const postRouter = express.Router();
 
 postRouter.post("/post/create", userAuth, async (req, res) => {
@@ -29,4 +30,15 @@ postRouter.get("/post/get", userAuth, async (req, res) => {
         res.status(400).json({ message: err.message })
     }
 })
+
+postRouter.get("/post/get/:userId", userAuth, async (req, res) => {
+    try {
+        const {userId} = req.params
+        const allPost = await PostModel.find({ postCreatedBy: new mongoose.Types.ObjectId(userId) }).populate("postCreatedBy", "firstName  lastName  photoUrl about")
+        res.status(200).json({ data: allPost })
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+});
+
 module.exports = postRouter

@@ -75,4 +75,5 @@ userRouter.get("/user/feed", userAuth, async (req, res) => {
         res.json({ message: err.message })
     }
 });
+
 module.exports = userRouter

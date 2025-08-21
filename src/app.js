@@ -33,8 +33,8 @@ initialSocket(server);
 
 databaseConnection().then(() => {
     console.log("database connection is establish");
-    server.listen(3000, () => {
-        console.log("server is runnnig on port 3000..");
+    server.listen(process.env.PORT, () => {
+        console.log(`server is runnnig on port ${process.env.PORT}..`);
     });
 }).catch((err) => {
     console.log("a error occured to connect db");

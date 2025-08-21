@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose")
 const requestRouter = express.Router();
 const { userAuth } = require("../middlewares/auth");
 const ConnectionRequestModel = require("../model/connectionRequest");
@@ -56,7 +57,7 @@ requestRouter.post("/connection/review/:status/:userid", userAuth, async (req, r
         }
 
         const connectionRequest = await ConnectionRequestModel.findOne({
-            _id:userid , toUserId: loggedinUser._id, status: "interested"
+            _id: userid, toUserId: loggedinUser._id, status: "interested"
         });
         if (!connectionRequest) {
             throw new Error("connecton request  not found ");
@@ -71,5 +72,25 @@ requestRouter.post("/connection/review/:status/:userid", userAuth, async (req, r
         res.json({ message: err.message });
     }
 
+});
+
+requestRouter.get("/connections/:userId", userAuth, async (req, res) => {
+    try {
+        let { userId } = req.params
+        userId = new mongoose.Types.ObjectId(userId);
+        
+        const allConnections = await ConnectionRequestModel.find({
+            $or: [
+                { fromUserId: userId, status: "accepted" },
+                { toUserId: userId, status: "accepted" }
+            ]
+        }).populate("fromUserId", ['firstName', 'lastName', 'age', 'gender', 'photoUrl', 'about'])
+            .populate("toUserId", ['firstName', 'lastName', 'age', 'gender', 'photoUrl', 'about']);
+
+        res.status(200).json({ message: allConnections })
+
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
 })
 module.exports = requestRouter;
