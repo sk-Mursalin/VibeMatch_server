@@ -26,14 +26,14 @@ app.use("/", userRouter);
 app.use("/", chatRouter);
 app.use("/", postRouter)
 
-
+const port  = process.env.PORT || 3000;
 const server = http.createServer(app);
 initialSocket(server);
 
 
 databaseConnection().then(() => {
     console.log("database connection is establish");
-    server.listen(process.env.PORT, () => {
+    server.listen(port, () => {
         console.log(`server is runnnig on port ${process.env.PORT}..`);
     });
 }).catch((err) => {
