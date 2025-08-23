@@ -26,7 +26,7 @@ app.use("/", userRouter);
 app.use("/", chatRouter);
 app.use("/", postRouter)
 
-const port  = process.env.PORT || 3000;
+const port  = 3000;
 const server = http.createServer(app);
 initialSocket(server);
 
@@ -34,7 +34,7 @@ initialSocket(server);
 databaseConnection().then(() => {
     console.log("database connection is establish");
     server.listen(port, () => {
-        console.log(`server is runnnig on port ${process.env.PORT}..`);
+        console.log(`server is runnnig on port ${port}..`);
     });
 }).catch((err) => {
     console.log("a error occured to connect db");
