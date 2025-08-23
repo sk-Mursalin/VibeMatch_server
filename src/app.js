@@ -26,7 +26,7 @@ app.use("/", userRouter);
 app.use("/", chatRouter);
 app.use("/", postRouter)
 
-const port  = 3000;
+const port  = process.env.PORT;
 const server = http.createServer(app);
 initialSocket(server);
 
