@@ -91,7 +91,7 @@ requestRouter.get("/connections/:userId", userAuth, async (req, res) => {
             if (el?.fromUserId == userId) { return el?.toUserId } else { return el?.fromUserId }
         });
 
-        res.status(200).json({ message: finalAllconection })
+        res.status(200).json({ data: finalAllconection })
 
     } catch (err) {
         res.status(400).json({ message: err.message })
