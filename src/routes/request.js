@@ -88,7 +88,11 @@ requestRouter.get("/connections/:userId", userAuth, async (req, res) => {
             .populate("toUserId", ['firstName', 'lastName', 'age', 'gender', 'photoUrl', 'about']);
 
         const finalAllconection = allConnections.map((el) => {
-            if (el?.fromUserId == userId) { return el?.toUserId } else { return el?.fromUserId }
+            if (el?.fromUserId._id == userId.toString()) {
+                return el?.toUserId
+            } else if (el?.toUserId._id == userId.toString()) {
+                return el?.fromUserId
+            }
         });
 
         res.status(200).json({ data: finalAllconection })
