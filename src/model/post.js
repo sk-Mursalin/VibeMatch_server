@@ -11,6 +11,7 @@ const postSchema = mongoose.Schema({
     postPhoto: {
         type: String
     },
+    like: [{ type: mongoose.Schema.Types.ObjectId }]
 }, { timestamps: true })
 
 const PostModel = mongoose.model("postSchema", postSchema);

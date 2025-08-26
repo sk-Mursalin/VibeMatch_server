@@ -33,11 +33,40 @@ postRouter.get("/post/get", userAuth, async (req, res) => {
 
 postRouter.get("/post/get/:userId", userAuth, async (req, res) => {
     try {
-        const {userId} = req.params
+        const { userId } = req.params
         const allPost = await PostModel.find({ postCreatedBy: new mongoose.Types.ObjectId(userId) }).populate("postCreatedBy", "firstName  lastName  photoUrl about")
         res.status(200).json({ data: allPost })
     } catch (err) {
         res.status(400).json({ message: err.message })
+    }
+});
+
+
+postRouter.patch("/post/like/:postId", userAuth, async (req, res) => {
+    try {
+        const { postId } = req.params;
+        const { _id } = req.profile;
+        const postData = await PostModel.findOne({ _id: postId });
+        if (!postData) {
+            return res.status(400).json({ data: "please give a valid postId" });
+        }
+
+        if (postData.like.includes(_id)) {
+            await PostModel.findByIdAndUpdate(
+                postId,
+                { $pull: { like: _id } }
+            )
+        } else {
+            await PostModel.findByIdAndUpdate(
+                postId,
+                { $addToSet: { like: _id } }
+            )
+        }
+        const updatedLike = await PostModel.findOne({ _id: postId });
+
+        res.json({ data: updatedLike });
+    } catch (err) {
+        res.json({ data: err.message })
     }
 });
 
