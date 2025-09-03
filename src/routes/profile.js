@@ -3,6 +3,7 @@ const profileRouter = express.Router();
 const { userAuth } = require("../middlewares/auth");
 const { profileEditValidation, passwordValidation } = require("../utils/validation");
 const bcrypt = require("bcrypt");
+const user = require("../model/user");
 
 
 profileRouter.get("/profile/view", userAuth, async (req, res) => {
@@ -42,8 +43,22 @@ profileRouter.patch("/profile/passwordedit", userAuth, async (req, res) => {
         await user.save()
         res.send("password updated successfully")
     } catch (err) {
-        res.status(400).json({message:err.message})
+        res.status(400).json({ message: err.message })
     }
-}); 
+});
+
+profileRouter.get("/profile/get/:ProfileId", userAuth, async (req, res) => {
+    try {
+        const { ProfileId } = req.params
+        const userExist = await user.findOne({ _id: ProfileId }).select("-password -email")
+        if (!userExist) {
+            throw new Error("user not exist please enter valid userId");
+        }
+        res.status(200).json({ data: userExist })
+
+    } catch (err) {
+        return res.status(400).json({ message: err.message })
+    }
+})
 
 module.exports = profileRouter;
