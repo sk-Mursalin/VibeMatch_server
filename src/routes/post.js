@@ -56,15 +56,14 @@ postRouter.patch("/post/like/:postId", userAuth, async (req, res) => {
                 postId,
                 { $pull: { like: _id } }
             )
+            return res.status(200).json({ message: "unlike" })
         } else {
             await PostModel.findByIdAndUpdate(
                 postId,
                 { $addToSet: { like: _id } }
             )
+            return res.status(200).json({ message: "like" })
         }
-        const updatedLike = await PostModel.findOne({ _id: postId });
-
-        res.json({ data: updatedLike });
     } catch (err) {
         res.json({ data: err.message })
     }
