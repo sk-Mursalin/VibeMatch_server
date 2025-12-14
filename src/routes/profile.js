@@ -61,20 +61,6 @@ profileRouter.get("/profile/get/:ProfileId", userAuth, async (req, res) => {
     }
 });
 
-profileRouter.delete("/profile/delete", userAuth, async (req, res) => {
-    const { email, _id } = req.profile
-    console.log(req.profile);
-    const request = await connectionRequestModel.find({ fromUserId: _id })
-    console.log(request);
-    // const { acknowledged } = await user.deleteOne({ email: email })
 
-    // if (!acknowledged) {
-    //     return res.status(500).json({ data: "server error" })
-    // }
-    // else {
-    //     return res.status(200).json({ data: "account deleted successfully" })
-
-    // }
-})
 
 module.exports = profileRouter;
